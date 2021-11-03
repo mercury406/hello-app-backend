@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class DeleteConstraintOnLocationTable extends Migration
+class CreatePersonalContactsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class DeleteConstraintOnLocationTable extends Migration
      */
     public function up()
     {
-        Schema::table('locations', function (Blueprint $table) {
-            $table->dropConstrainedForeignId("contact_id");
+        Schema::create('personal_contacts', function (Blueprint $table) {
+            $table->id();
+            $table->string('contact_id', 120);
+            $table->json('data');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class DeleteConstraintOnLocationTable extends Migration
      */
     public function down()
     {
-        Schema::table('locations', function (Blueprint $table) {
-            $table->foreignId("contact_id")->constrained();
-        });
+        Schema::dropIfExists('personal_contacts');
     }
 }

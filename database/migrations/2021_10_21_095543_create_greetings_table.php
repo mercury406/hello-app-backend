@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnToLocationTable extends Migration
+class CreateGreetingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddColumnToLocationTable extends Migration
      */
     public function up()
     {
-        Schema::table('locations', function (Blueprint $table) {
-            $table->string("contact_id", 120)->after("id");
+        Schema::create('greetings', function (Blueprint $table) {
+            $table->id();
+            $table->text('from');
+            $table->text('to');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddColumnToLocationTable extends Migration
      */
     public function down()
     {
-        Schema::table('locations', function (Blueprint $table) {
-            $table->dropColumn("contact_id");
-        });
+        Schema::dropIfExists('greetings');
     }
 }
