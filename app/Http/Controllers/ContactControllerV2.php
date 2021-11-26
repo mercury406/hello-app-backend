@@ -68,7 +68,7 @@ class ContactControllerV2 extends Controller
             'data' => ["name" => "$contact->cName", "number" => "$contact->msisdn", "date" => "".date("H:i, d-m-Y"), "canSend" => "y"],
         );
         $headers = array(
-            'Authorization:key=AAAAsYcmvC0:APA91bH25enZEkGw4NrXhVNyj74PjYMZUARoRKsYdZ_o-xPClvsxyxfAIEC4nGfntR9u50IqqUKQUbNLEymtQVGA9kYGj_u4gdW74VtIitHPQvOGwBEUcCedsf15y2ntes5KrkZAZwkh',
+            'Authorization:key=' . $your_key_here,
             'Content-Type:application/json'
         );
         $ch = curl_init();
