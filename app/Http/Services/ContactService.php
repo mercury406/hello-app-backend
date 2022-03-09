@@ -10,10 +10,10 @@ use App\Models\ContactOwner;
 
 class ContactService {
 
-    const MAX_TIMEDIFFERENCE_IN_MINUTES = 15;
+    const MAX_TIMEDIFFERENCE_IN_MINUTES = 15; // TimeDiff between Locations
 
-    const MAX_DISTANCE_IN_METERS = 10000;
-    const MIN_TIMEDIFFERENCE_IN_SECONDS = 4 * 60 * 60;
+    const MAX_DISTANCE_IN_METERS = 25;
+    const MIN_TIMEDIFFERENCE_IN_SECONDS = 12 * 60 * 60; // TimeDiff between Greetings
 
     /**
      * @param string $message
@@ -25,7 +25,6 @@ class ContactService {
     {
         return ["status" => "error", "message" => $message];
     }
-
 
 
     /**
@@ -107,13 +106,11 @@ class ContactService {
      */
     public function distanceCalculation(ContactOwner $main = null, ContactOwner $candidate = null)
     {
-        if($main == null || $candidate == null) return -1;
+        if($main == null || $candidate == null || $main->location == null || $candidate->location == null || $main->location->updated_at == null || $candidate->location->updated_at == null) return -1;
 
         $time_of_main = new DateTime($main->location->updated_at);
-
         $time_of_candidate = new DateTime($candidate->location->updated_at);
 
-        // return $this->haversineGreatCircleDistance();
         $difference = $time_of_main->diff($time_of_candidate);
 
         if($difference->format("%h") > 0 || $difference->format("%i") > self::MAX_TIMEDIFFERENCE_IN_MINUTES) return -1;

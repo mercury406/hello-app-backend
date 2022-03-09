@@ -36,7 +36,6 @@ class LocationController extends Controller
      */
     public function getNearbyUsers(Request $request)
     {
-        
         $owner = ContactOwner::where('uid', $request->header('Authorization') )
                                 ->with(['greetings', 'contacts'])
                                 ->first() ?? abort(404);
@@ -44,23 +43,15 @@ class LocationController extends Controller
 
 
         $contacts = $request->contacts ?? abort(403, "No data provided");
-        
-
-        // dd($contacts);
-
-        
-        // $mutualContacts = $owner->contacts->filter(function ($contact){
-        //     return ContactOwner::where(['msisdn' => $contact->msisdn])->with('location')->orderByDesc('created_at')->first();
-        // });
 
         $mutualContacts = collect(json_decode($contacts));
-        
+
         $final = $mutualContacts->map(function($mutual) use($owner){
             // dd($mutual->msisdn);
             $candidate_contact = $owner->contacts->where('msisdn', $mutual->msisdn)->first();
-            
+
             // dd($candidate_contact);
-            
+
             if(!$candidate_contact) return [
                 "name" => null,
                 "msisdn" => $mutual->msisdn,
@@ -68,10 +59,10 @@ class LocationController extends Controller
                 "canSendHello" => false
             ];
 
-            
+
             $candidate = ContactOwner::where(['msisdn' => $mutual->msisdn])->with(['location', 'greetings'])->orderByDesc('created_at')->first();
             $distance = $this->contact_service->distanceCalculation($owner, $candidate);
-                   
+
             return [
                 "name" => $candidate_contact->cName,
                 "msisdn" => $mutual->msisdn,
@@ -81,13 +72,11 @@ class LocationController extends Controller
         });
 
         $final = $final->filter(function($f) {
-            return $f['distance'] >= 0 && $f['name'] != null;
+            return $f['distance'] >= 0 && $f['name'] != null && $f["distance"] < 25;
         });
 
         return response()->json(['status' => 'ok', "contacts" => $final->values()], 200);
 
-        
-        
 
         // $personalContactInstance = PersonalContact::where('contact_id', $contact_id)->firstOrFail();
 
@@ -144,10 +133,18 @@ class LocationController extends Controller
         $uid = $request->uid;
 
         ContactOwner::findOrFail($uid);
+
+
         $long = $request->long;
         $lat = $request->lat;
 
-        Location::updateOrCreate(["contact_id" => $uid], ["lat" => $lat, "long" => $long]);
+        //Location::updateOrCreate(["contact_id" => $uid], ["lat" => $lat, "long" => $long]);
+
+	$location = Location::firstOrNew(["contact_id" => $uid]);
+	$location->lat = $lat;
+	$location->long = $long;
+	$location->updated_at = now();
+	$location->save();
 
         return response()->json(["status"=> "ok", "message" => "created"], 201);
      

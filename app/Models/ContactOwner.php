@@ -4,10 +4,12 @@ namespace App\Models;
 
 use App\Models\Location;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ContactOwner extends Model
 {
+    use SoftDeletes;
     use HasFactory;
 
     protected $guarded = [];
@@ -49,13 +51,14 @@ class ContactOwner extends Model
 
     function newFriendNotification($token, $contact)
     {
+        
         $path_to_firebase_cm = 'https://fcm.googleapis.com/fcm/send';
         $fields = array(
             'to' => $token,
             'data' => ['event' => 'newFriendConnected', "name" => "$contact->cName", "number" => "$contact->msisdn"]
         );
         $headers = array(
-            'Authorization:key=AAAAsYcmvC0:APA91bH25enZEkGw4NrXhVNyj74PjYMZUARoRKsYdZ_o-xPClvsxyxfAIEC4nGfntR9u50IqqUKQUbNLEymtQVGA9kYGj_u4gdW74VtIitHPQvOGwBEUcCedsf15y2ntes5KrkZAZwkh',
+            'Authorization:key=AAAAW5W-arY:APA91bENCOWPkfCN6SV6Zfeqf51ts2HUgo90qjLxy5_cM3cOicKzA5FgYqLAl141sDe9KIHFTWoRhbq_D4ztA8b5fRkxVRZILlQQ9cQnc_3L5BN5Ct2li0Bm7V7HxHlReW1OoxkKvYCD',
             'Content-Type:application/json'
         );
         $ch = curl_init();

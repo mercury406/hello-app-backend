@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Artisan;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +14,35 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+   // return view('welcome');
+	return "meta-hi.uz в разработке";
 });
+
+Route::get('/privacy', function() {
+	return view('privacy');
+});
+
+Route::get('/privacy/ru', function() {
+	return view('privacy_ru');
+});
+
+
+// Route::get('/migrate', function() {
+// 	$a = Artisan::call('migrate');
+// 	return $a;
+// });
+
+
+// Route::get('/rollback', function() {
+// 	$a = Artisan::call('migrate:rollback');
+// 	return $a;
+// });
+
+// Route::get('/fresh', function() {
+// 	$a = Artisan::call('migrate:fresh');
+// 	return $a;
+// });
+
+// Route::get('/makemigration', function() {
+// 	Artisan::call('make:migration add_soft_deletes_to_contacts_table');
+// });

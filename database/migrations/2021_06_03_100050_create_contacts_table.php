@@ -21,6 +21,7 @@ class CreateContactsTable extends Migration
             $table->string("owner_uid", 255);
             // $table->foreign("owner_uid")->references("uid")->on("contact_owners")->onUpdate("cascade");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

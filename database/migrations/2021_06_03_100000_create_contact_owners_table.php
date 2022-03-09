@@ -18,6 +18,7 @@ class CreateContactOwnersTable extends Migration
             $table->string("msisdn");
             $table->string("fcm")->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

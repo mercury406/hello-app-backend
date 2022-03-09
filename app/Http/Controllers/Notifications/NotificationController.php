@@ -16,6 +16,7 @@ class NotificationController extends Controller
      * The contact service instance.
      */
     protected $contact_service;
+    private $firebase_key = "AAAAW5W-arY:APA91bENCOWPkfCN6SV6Zfeqf51ts2HUgo90qjLxy5_cM3cOicKzA5FgYqLAl141sDe9KIHFTWoRhbq_D4ztA8b5fRkxVRZILlQQ9cQnc_3L5BN5Ct2li0Bm7V7HxHlReW1OoxkKvYCD";
 
     /**
      * Create a new controller instance.
@@ -39,7 +40,7 @@ class NotificationController extends Controller
         foreach ($notifyingUsers as $user){
             Greeting::firstOrCreate(['from' => $uid, 'to' => $msisdn])->touch();
             $token = $user->fcm; // who will get the notification
-            info($user->msisdn);
+//            info($user->msisdn);
 
             $this->helloNotification($token, $user, $notifyer);
             // $contact_of_user = Contact::where(['owner_uid' => $uid, 'msisdn' => $user->msisdn])->first();
@@ -73,7 +74,7 @@ class NotificationController extends Controller
         );
 
         $headers = array(
-            'Authorization:key=AAAAsYcmvC0:APA91bH25enZEkGw4NrXhVNyj74PjYMZUARoRKsYdZ_o-xPClvsxyxfAIEC4nGfntR9u50IqqUKQUbNLEymtQVGA9kYGj_u4gdW74VtIitHPQvOGwBEUcCedsf15y2ntes5KrkZAZwkh',
+            'Authorization:key=' . $this->firebase_key,
             'Content-Type:application/json'
         );
         $ch = curl_init();
