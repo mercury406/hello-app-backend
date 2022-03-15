@@ -27,6 +27,7 @@ Route::get('/privacy/ru', function() {
 });
 
 
+
 // Route::get('/migrate', function() {
 // 	$a = Artisan::call('migrate');
 // 	return $a;
